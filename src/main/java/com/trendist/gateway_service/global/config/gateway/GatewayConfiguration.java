@@ -31,6 +31,14 @@ public class GatewayConfiguration {
 				)
 				.uri("lb://USER-SERVICE"))
 
+			.route("post_service_route", r -> r.path("/posts/**")
+				.filters(f -> f
+					.filter(jwtAuthorizationFilter)
+					.removeRequestHeader(HttpHeaders.COOKIE)
+				)
+				.uri("lb://POST-SERVICE")
+			)
+
 			// 인증 필요 없는 라우트
 			.route("user_public_route", r -> r.path("/users/public/**")
 				.filters(f -> f
