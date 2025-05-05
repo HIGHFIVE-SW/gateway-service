@@ -40,11 +40,17 @@ public class GatewayConfiguration {
 			)
 
 			// 인증 필요 없는 라우트
-			.route("user_public_route", r -> r.path("/users/public/**")
+			.route("user_publi	c_route", r -> r.path("/users/public/**")
 				.filters(f -> f
 					.removeRequestHeader(HttpHeaders.COOKIE)
 				)
 				.uri("lb://USER-SERVICE"))
+
+			// Activity 서비스  라우트 설정
+			.route("activity-service_route", r -> r.path("/global/activities/**")
+				.filters(f -> f
+					.removeRequestHeader(HttpHeaders.COOKIE))
+				.uri("lb://ACTIVITY-SERVICE"))
 
 			.build();
 	}
