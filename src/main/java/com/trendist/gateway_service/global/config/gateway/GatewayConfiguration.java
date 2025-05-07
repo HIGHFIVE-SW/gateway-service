@@ -40,7 +40,7 @@ public class GatewayConfiguration {
 			)
 
 			// 인증 필요 없는 라우트
-			.route("user_publi	c_route", r -> r.path("/users/public/**")
+			.route("user_public_route", r -> r.path("/users/public/**")
 				.filters(f -> f
 					.removeRequestHeader(HttpHeaders.COOKIE)
 				)
