@@ -46,6 +46,12 @@ public class GatewayConfiguration {
 				)
 				.uri("lb://USER-SERVICE"))
 
+			// Activity 서비스  라우트 설정
+			.route("activity-service_route", r -> r.path("/global/activities/**")
+				.filters(f -> f
+					.removeRequestHeader(HttpHeaders.COOKIE))
+				.uri("lb://ACTIVITY-SERVICE"))
+
 			.build();
 	}
 }
