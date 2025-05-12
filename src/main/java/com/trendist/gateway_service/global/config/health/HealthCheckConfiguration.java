@@ -43,12 +43,13 @@ public class HealthCheckConfiguration {
 
 			// 각 서비스에 대한 health indicator 추가
 			healthChecks.put("user-service", getHealth("http://user-service"));
+			healthChecks.put("post-service", getHealth("http://post-service"));
+			healthChecks.put("activity-service", getHealth("http://activity-service"));
+
 
             /* 추후에 각 서비스들 구현시 추가
-            healthChecks.put("post-service", getHealth("http://post-service"));
             healthChecks.put("review-service", getHealth("http://review-service"));
             healthChecks.put("comment-service", getHealth("http://comment-service"));
-            healthChecks.put("activity-service", getHealth("http://activity-service"));
             healthChecks.put("issue-service", getHealth("http://issue-service"));
              */
 
