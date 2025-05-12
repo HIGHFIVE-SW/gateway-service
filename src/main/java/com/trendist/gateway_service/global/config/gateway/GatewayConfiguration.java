@@ -39,6 +39,14 @@ public class GatewayConfiguration {
 				.uri("lb://POST-SERVICE")
 			)
 
+			.route("issue_service_route", r -> r.path("/issues/**")
+				.filters(f -> f
+					// JWT 인증 필터
+					.filter(jwtAuthorizationFilter)
+					.removeRequestHeader(HttpHeaders.COOKIE)
+				)
+				.uri("lb://ISSUE-SERVICE"))
+
 			// 인증 필요 없는 라우트
 			.route("user_public_route", r -> r.path("/users/public/**")
 				.filters(f -> f
@@ -51,11 +59,6 @@ public class GatewayConfiguration {
 				.filters(f -> f
 					.removeRequestHeader(HttpHeaders.COOKIE))
 				.uri("lb://ACTIVITY-SERVICE"))
-
-			.route("issue-service_route", r -> r.path("/issues/**")
-				.filters(f -> f
-					.removeRequestHeader(HttpHeaders.COOKIE))
-				.uri("lb://ISSUE-SERVICE"))
 
 			.build();
 	}
