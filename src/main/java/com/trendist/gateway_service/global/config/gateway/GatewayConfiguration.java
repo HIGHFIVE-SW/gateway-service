@@ -52,6 +52,11 @@ public class GatewayConfiguration {
 					.removeRequestHeader(HttpHeaders.COOKIE))
 				.uri("lb://ACTIVITY-SERVICE"))
 
+			.route("issue-service_route", r -> r.path("/issues/**")
+				.filters(f -> f
+					.removeRequestHeader(HttpHeaders.COOKIE))
+				.uri("lb://ISSUE-SERVICE"))
+
 			.build();
 	}
 }
