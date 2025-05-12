@@ -31,7 +31,7 @@ public class GatewayConfiguration {
 				)
 				.uri("lb://USER-SERVICE"))
 
-			.route("post_service_route", r -> r.path("/posts/**")
+			.route("post_service_route", r -> r.path("/posts/**", "/comments/**", "/reviews/**")
 				.filters(f -> f
 					.filter(jwtAuthorizationFilter)
 					.removeRequestHeader(HttpHeaders.COOKIE)
