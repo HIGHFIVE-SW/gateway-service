@@ -48,19 +48,21 @@ public class GatewayConfiguration {
 				)
 				.uri("lb://ISSUE-SERVICE"))
 
+			// Activity 서비스  라우트 설정
+			.route("activity-service_route", r -> r.path("/activities/**")
+				.filters(f -> f
+					.filter(jwtAuthorizationFilter)
+					.removeRequestHeader(HttpHeaders.COOKIE)
+				)
+				.uri("lb://ACTIVITY-SERVICE")
+			)
+
 			// 인증 필요 없는 라우트
 			.route("user_public_route", r -> r.path("/users/public/**")
 				.filters(f -> f
 					.removeRequestHeader(HttpHeaders.COOKIE)
 				)
 				.uri("lb://USER-SERVICE"))
-
-			// Activity 서비스  라우트 설정
-			.route("activity-service_route", r -> r.path("/activities/**")
-				.filters(f -> f
-					.filter(jwtAuthorizationFilter)
-					.removeRequestHeader(HttpHeaders.COOKIE))
-				.uri("lb://ACTIVITY-SERVICE"))
 
 			.build();
 	}
