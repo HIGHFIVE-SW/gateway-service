@@ -31,7 +31,8 @@ public class GatewayConfiguration {
 				)
 				.uri("lb://USER-SERVICE"))
 
-			.route("post_service_route", r -> r.path("/posts/**", "/comments/**", "/reviews/**")
+			.route("post_service_route", r -> r.path("/posts/**", "/comments/**",
+					"/reviews/**", "/profile/**")
 				.filters(f -> f
 					.filter(jwtAuthorizationFilter)
 					.removeRequestHeader(HttpHeaders.COOKIE)
@@ -55,8 +56,9 @@ public class GatewayConfiguration {
 				.uri("lb://USER-SERVICE"))
 
 			// Activity 서비스  라우트 설정
-			.route("activity-service_route", r -> r.path("/global/activities/**")
+			.route("activity-service_route", r -> r.path("/activities/**")
 				.filters(f -> f
+					.filter(jwtAuthorizationFilter)
 					.removeRequestHeader(HttpHeaders.COOKIE))
 				.uri("lb://ACTIVITY-SERVICE"))
 
