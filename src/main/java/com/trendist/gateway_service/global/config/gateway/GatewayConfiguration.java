@@ -32,7 +32,7 @@ public class GatewayConfiguration {
 				.uri("lb://USER-SERVICE"))
 
 			.route("post_service_route", r -> r.path("/posts/**", "/comments/**",
-					"/reviews/**", "/profile/**")
+					"/reviews/**", "/profile/reviews/**", "/profile/posts/**")
 				.filters(f -> f
 					.filter(jwtAuthorizationFilter)
 					.removeRequestHeader(HttpHeaders.COOKIE)
@@ -40,7 +40,7 @@ public class GatewayConfiguration {
 				.uri("lb://POST-SERVICE")
 			)
 
-			.route("issue_service_route", r -> r.path("/issues/**", "/profile/**")
+			.route("issue_service_route", r -> r.path("/issues/**", "/profile/issues/**")
 				.filters(f -> f
 					// JWT 인증 필터
 					.filter(jwtAuthorizationFilter)
@@ -49,7 +49,8 @@ public class GatewayConfiguration {
 				.uri("lb://ISSUE-SERVICE"))
 
 			// Activity 서비스  라우트 설정
-			.route("activity-service_route", r -> r.path("/activities/**")
+			.route("activity-service_route", r -> r.path("/activities/**",
+					"/profile/activities/**")
 				.filters(f -> f
 					.filter(jwtAuthorizationFilter)
 					.removeRequestHeader(HttpHeaders.COOKIE)
