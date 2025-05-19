@@ -40,7 +40,7 @@ public class GatewayConfiguration {
 				.uri("lb://POST-SERVICE")
 			)
 
-			.route("issue_service_route", r -> r.path("/issues/**")
+			.route("issue_service_route", r -> r.path("/issues/**", "/profile/**")
 				.filters(f -> f
 					// JWT 인증 필터
 					.filter(jwtAuthorizationFilter)
