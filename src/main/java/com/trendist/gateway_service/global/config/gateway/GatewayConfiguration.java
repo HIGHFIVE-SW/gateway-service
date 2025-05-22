@@ -31,12 +31,31 @@ public class GatewayConfiguration {
 				)
 				.uri("lb://USER-SERVICE"))
 
-			.route("post_service_route", r -> r.path("/posts/**")
+			.route("post_service_route", r -> r.path("/posts/**", "/comments/**",
+					"/reviews/**", "/profile/reviews/**", "/profile/posts/**", "/presignedurls/**")
 				.filters(f -> f
 					.filter(jwtAuthorizationFilter)
 					.removeRequestHeader(HttpHeaders.COOKIE)
 				)
 				.uri("lb://POST-SERVICE")
+			)
+
+			.route("issue_service_route", r -> r.path("/issues/**", "/profile/issues/**")
+				.filters(f -> f
+					// JWT 인증 필터
+					.filter(jwtAuthorizationFilter)
+					.removeRequestHeader(HttpHeaders.COOKIE)
+				)
+				.uri("lb://ISSUE-SERVICE"))
+
+			// Activity 서비스  라우트 설정
+			.route("activity-service_route", r -> r.path("/activities/**",
+					"/profile/activities/**")
+				.filters(f -> f
+					.filter(jwtAuthorizationFilter)
+					.removeRequestHeader(HttpHeaders.COOKIE)
+				)
+				.uri("lb://ACTIVITY-SERVICE")
 			)
 
 			// 인증 필요 없는 라우트
@@ -45,12 +64,6 @@ public class GatewayConfiguration {
 					.removeRequestHeader(HttpHeaders.COOKIE)
 				)
 				.uri("lb://USER-SERVICE"))
-
-			// Activity 서비스  라우트 설정
-			.route("activity-service_route", r -> r.path("/global/activities/**")
-				.filters(f -> f
-					.removeRequestHeader(HttpHeaders.COOKIE))
-				.uri("lb://ACTIVITY-SERVICE"))
 
 			.build();
 	}
