@@ -19,3 +19,18 @@ eureka:
 auth:
   jwt:
     key: ${JWT_SECRET}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: User Service
+        url: /api-docs/users/v3/api-docs
+      - name: Post Service
+        url: /api-docs/posts/v3/api-docs
+      - name: Issue Service
+        url: /api-docs/issues/v3/api-docs
+      - name: Activity Service
+        url: /api-docs/activities/v3/api-docs
