@@ -65,6 +65,31 @@ public class GatewayConfiguration {
 				)
 				.uri("lb://USER-SERVICE"))
 
+			.route("user_api_docs", r -> r.path("/api-docs/users/**")
+				.filters(f -> f
+					// /api-docs/users/v3/api-docs → /v3/api-docs
+					.rewritePath("/api-docs/users/(?<rem>.*)", "/${rem}")
+				)
+				.uri("lb://USER-SERVICE"))
+
+			.route("post_api_docs", r -> r.path("/api-docs/posts/**")
+				.filters(f -> f
+					.rewritePath("/api-docs/posts/(?<rem>.*)", "/${rem}")
+				)
+				.uri("lb://POST-SERVICE"))
+
+			.route("issue_api_docs", r -> r.path("/api-docs/issues/**")
+				.filters(f -> f
+					.rewritePath("/api-docs/issues/(?<rem>.*)", "/${rem}")
+				)
+				.uri("lb://ISSUE-SERVICE"))
+
+			.route("activity_api_docs", r -> r.path("/api-docs/activities/**")
+				.filters(f -> f
+					.rewritePath("/api-docs/activities/(?<rem>.*)", "/${rem}")
+				)
+				.uri("lb://ACTIVITY-SERVICE"))
+
 			.build();
 	}
 }
