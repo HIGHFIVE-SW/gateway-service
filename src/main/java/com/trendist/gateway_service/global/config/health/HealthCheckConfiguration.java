@@ -1,30 +1,22 @@
 package com.trendist.gateway_service.global.config.health;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.ReactiveHealthIndicator;
-import org.springframework.boot.actuate.health.Status;
-import org.springframework.boot.actuate.health.StatusAggregator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Configuration
 public class HealthCheckConfiguration {
 
-	private static final Logger LOG = LoggerFactory.getLogger(HealthCheckConfiguration.class);
+	@Bean
+	ReactiveHealthIndicator serviceHealthCheck() {
+		return () -> Mono.just(Health.up().build());
+
+	}
+}
+/*private static final Logger LOG = LoggerFactory.getLogger(HealthCheckConfiguration.class);
 
 	private final StatusAggregator statusAggregator;
 	private final WebClient.Builder webClientBuilder;
@@ -47,11 +39,7 @@ public class HealthCheckConfiguration {
 			healthChecks.put("activity-service", getHealth("http://activity-service"));
 
 
-            /* 추후에 각 서비스들 구현시 추가
-            healthChecks.put("review-service", getHealth("http://review-service"));
-            healthChecks.put("comment-service", getHealth("http://comment-service"));
-            healthChecks.put("issue-service", getHealth("http://issue-service"));
-             */
+
 
 			// 모든 서비스의 상태 확인을 수행하는 Mono 리스트 생성
 			List<Mono<Map.Entry<String, Health>>> monos = new ArrayList<>();
@@ -77,10 +65,8 @@ public class HealthCheckConfiguration {
 						.withDetails(healthMap)
 						.build();
 				});
-		};
-	}
-
-	private Mono<Health> getHealth(String url) {
+		};*/
+	/*private Mono<Health> getHealth(String url) {
 		url += "/actuator/health";
 		LOG.debug("Checking Health API: {}", url);
 		return getWebClient().get().uri(url).retrieve().bodyToMono(String.class)
@@ -94,5 +80,4 @@ public class HealthCheckConfiguration {
 			webClient = webClientBuilder.build();
 		}
 		return webClient;
-	}
-}
+	}*/
