@@ -6,6 +6,10 @@ spring:
     web-application-type: reactive
   application:
     name: gateway-service
+  cloud:
+    kubernetes:
+      discovery:
+        enabled: false
 
 eureka:
   client:
