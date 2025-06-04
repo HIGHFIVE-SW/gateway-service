@@ -11,7 +11,7 @@ import org.springframework.http.HttpHeaders;
 import com.trendist.gateway_service.global.filter.jwt.JwtAuthorizationFilter;
 
 @Configuration
-@Profile("local,dev")
+@Profile({"local","dev"})
 public class GatewayConfiguration {
 
 	private final JwtAuthorizationFilter jwtAuthorizationFilter;
