@@ -1,0 +1,40 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: [ "CI pipeline" ]
+    types:
+      - completed
+
+jobs:
+  deploy-to-k8s:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(\
+            curl -L -s https://dl.k8s.io/release/stable.txt\
+          )/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
+      - name: Setup kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+
+      - name: Install kic-iam-auth plugin
+        run: |
+          curl -L "https://objectstorage.kr-central-2.kakaocloud.com/v1/c11fcba415bd4314b595db954e4d4422/public/docs/binaries-kic-iam-auth/Linux%20x86_64%2064Bit/kic-iam-auth" \
+            -o kic-iam-auth
+          chmod +x kic-iam-auth
+          sudo cp kic-iam-auth /usr/local/bin/
+
+      - name: Test kubectl 연결
+        run: kubectl get nodes -n trendist
+
+      - name: Rollout restart deployment
+        run: kubectl rollout restart deployment/gateway-service -n trendist
