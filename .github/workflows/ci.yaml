@@ -1,0 +1,44 @@
+name: CI pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: jdk 설정
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Gradle Wrapper 권한 부여
+        run: chmod +x gradlew
+
+      - name: gradle 빌드
+        run: ./gradlew clean build
+
+      - name: Kakao Cloud Container Registry 로그인
+        uses: docker/login-action@v3
+        with:
+          registry: highfive.kr-central-2.kcr.dev
+          username: ${{ secrets.KCR_USERNAME }}
+          password: ${{ secrets.KCR_PASSWORD }}
+
+      - name: 이미지 빌드 및 푸시
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: highfive.kr-central-2.kcr.dev/trendist-dev/gateway-service:latest
+          push: true
