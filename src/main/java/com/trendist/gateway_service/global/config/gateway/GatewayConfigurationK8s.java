@@ -36,7 +36,6 @@ public class GatewayConfigurationK8s {
 			// User 서비스 라우트
 			.route("user_service_route", r -> r.path("/users/**")
 				.filters(f -> f
-					.removeResponseHeader("Access-Control-Allow-Origin")
 					// JWT 인증 필터
 					.filter(jwtAuthorizationFilter)
 					.removeRequestHeader(HttpHeaders.COOKIE)
